@@ -1,6 +1,8 @@
 const EASY = 1; // less or equal to 5 letter
 const MEDIUM = 2; // 5 to 7 letter
 const HARD = 3; // equal or more than 7 letter
+const fs = require('fs');
+const csv = require('csv-parser');
 
 const WORD_ARRAY = [
     /*[0]*/'fly','try', // 3 letter  EASY)
@@ -17,48 +19,44 @@ class Game{
             return false;
         }
     }
-
-    wordArrayFilter(){
-        wordArray = this.WORD_ARRAY;
-        switch(wordArray){
+    wordArrayFilter(difficulty){
+        let wordArray = this.WORD_ARRAY;
+        switch(difficulty){
             case EASY: {
                 let oneUsageArray = new Array
-                for (let i = 0; i < wordArray.length; i++){
-                    if (wordArray[i].length <= 5){
-                        oneUsageArray.push(wordArray[i]);
+                for (let i = 0; i < this.listOfWords.length; i++){
+                    if (this.listOfWords[i].length <= 5){
+                        oneUsageArray.push(this.listOfWords[i])
                     }
                 }
-                console.log(oneUsageArray)
-                return oneUsageArray;
+                console.log("je susi la phase EASY")
+                return oneUsageArray
             }
             case MEDIUM: {
                 let oneUsageArray = new Array
-                for(let i = 0; i < wordArray.length; i++){
-                    if (wordArray[i].length >=5 && wordArray[i].length <=7){
-                        oneUsageArray.push(wordArray[i]);
+                for(let i = 0; i < this.listOfWords.length; i++){
+                    if (this.listOfWords[i].length >=5 && this.listOfWords[i].length <=7){
+                        oneUsageArray.push(this.listOfWords[i])
                     }
                 }
-                console.log(oneUsageArray)
-                return oneUsageArray;
+                console.log("I'm the MEDIUM PART")
+                return oneUsageArray
             }
             case HARD: {
                 let oneUsageArray = new Array
-                for (let i = 0; i < wordArray.length; i++){
-                    if (wordArray[i].length > 7){
-                        oneUsageArray.push(wordArray[i]);
-                        console.log(oneUsageArray)
+                for (let i = 0; i < this.listOfWords.length; i++){
+                    if (this.listOfWords[i].length > 7){
+                        oneUsageArray.push(this.listOfWords[i])
+                        console.log("PHASE HARD")
                     }
                 }
-                console.log(oneUsageArray)
-                return oneUsageArray;
+                return oneUsageArray
             }
         }
     }
-
     getRandomIndex(wordArray){
         return Math.floor(Math.random() * wordArray.length)
     }
-
     getRandomWord(difficulty){
         switch(difficulty){
             case EASY: {
@@ -80,9 +78,19 @@ class Game{
         }
     }
 
-    wordKeeper(){
-        
+    //CONSTRUCTOR PART
+    constructor(){
+        this.listOfWords = [];
+        this.numberOfTry = 5;
+        fs.createReadStream('words_fr.txt')
+            .pipe(csv())
+            .on('data', (row) => {
+                this.listOfWords.push(row.word.toLowerCase());
+            })
+            .on('end', () => {
+                console.log(this.listOfWords);
+                console.log('CSV file successfully processed');
+            });
     }
 }
-
 module.exports = {Game:Game, EASY:EASY, MEDIUM:MEDIUM, HARD:HARD}
