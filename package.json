@@ -1,0 +1,22 @@
+{
+  "name": "hangman_game",
+  "version": "1.0.0",
+  "description": "a hangman game",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "mocha",
+    "code-coverage": "nyc mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "hangman_game"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "chai": "^4.3.7",
+    "mocha": "^10.2.0",
+    "nyc": "^15.1.0"
+  }
+}
